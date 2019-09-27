@@ -1,5 +1,6 @@
 import React from 'react';
 import FormStep from "./FormStep";
+import Step1IRD from "./Step1IRD";
 
 export default class Formulaire extends React.Component {
 
@@ -10,7 +11,7 @@ export default class Formulaire extends React.Component {
 
     render() {
         return (
-            <FormStep />
+            <Step1IRD/>
         )
     }
 }

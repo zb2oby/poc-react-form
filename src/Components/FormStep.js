@@ -1,49 +1,21 @@
 import React from 'react';
 import FormItem from "./FormItem";
+import {rules} from "../Services/ValidationRules";
 
 
 export default class FormStep extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            items :  [
-                {
-                    name: "nom",
-                    show: true,
-                    errors: [],
-                    validationRules: (v)=>this.isNotEmpty(v) ,
-                    value: "",
-                    content: <input placeholder={"nom"} onChange={(e) => this.onChange("nom", e)} className={"input"} name={"nom"} />
-                },
-                {
-                    name: "prenom",
-                    show: true,
-                    errors: [],
-                    validationRules: (v)=>this.isNotEmpty(v) ,
-                    value: "",
-                    content:  <input placeholder={"prenom"} onChange={(e) => this.onChange("prenom", e)} className={"input"} name={"prenom"} />
-                }
-            ],
-            /*rules : [
-                {
-                    ruleType: "champ_vide",
-                    names: ["nom", "prenom"],
-                    isValid: (v)=> (v === ""),
-                    message: "le nom est obligatoire"
-                }
-            ]*/
-
+            items: props.schema
         }
-    }
-
-    isNotEmpty = (v) => {
-       let isValid = v !== "" && v !== null;
-        return {isValid: isValid, message: "le champ est obligatoire"}
     }
 
 
     onChange = (name, val) => {
+        //on itere sur les items
         let items = this.state.items.map((item)=> {
+            //pour l'item qu'on modifie
             if (item.name === name) {
                 if (item.errors.length > 0) {
                     item.errors = []
@@ -57,25 +29,31 @@ export default class FormStep extends React.Component {
 
 
     validate = () => {
-
         let isValid = true;
         let items = this.state.items.map((item)=> {
+            //on vide les précédentes erreurs
             item.errors = [];
-            let checkValidation = item.validationRules(item.value)
-            if (!checkValidation.isValid) {
-                isValid = false;
-                item.errors.push(checkValidation.message);
-            }
-
+            //on charge la liste des regles du champ à valider
+            let itemRules = rules[item.name];
+            //on itere sur les regle
+            itemRules.map((rule)=> {
+                //si une règle n'est pas respectée on set isValid à false pour modifier le state et on charge les messages d'erreur dans l'item
+                if (!rule.isValid(item.value)) {
+                    isValid = false;
+                    item.errors.push(rule.message);
+                }
+            });
             return item;
         });
 
+        //si au moins une erreur a été rencontrée on recharge les items
         if (!isValid) {
             this.setState({
                 items: items
             })
         }
 
+        //on retourne la valeur de isValid pour l'etape suivante
         return isValid
     };
 
@@ -91,7 +69,7 @@ export default class FormStep extends React.Component {
         return (
             <div>
                 {items}
-                <button type={"button"} onClick={this.validate}>valider</button>
+                <button type={"button"} onClick={()=>this.validate(this.state.items)}>valider</button>
             </div>
 
         )
