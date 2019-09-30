@@ -1,6 +1,8 @@
 import React from 'react';
 import FormItem from "./FormItem";
 import {rules} from "../Services/ValidationRules";
+import Dispatcher from "../Services/Dispatcher";
+import dataStore from "../Services/dataStore";
 
 
 export default class FormStep extends React.Component {
@@ -13,6 +15,7 @@ export default class FormStep extends React.Component {
 
 
     onChange = (name, val) => {
+        let data = dataStore.data;
         //on itere sur les items
         let items = this.state.items.map((item)=> {
             //pour l'item qu'on modifie
@@ -21,11 +24,18 @@ export default class FormStep extends React.Component {
                     item.errors = []
                 }
                 item.value = val.target.value;
+                data[item.name] = item.value;
             }
             return item;
         });
         this.setState({items: items});
-    }
+
+
+        Dispatcher.dispatch({
+            type : "UPDATE_DATA",
+            data : data
+        })
+    };
 
 
     validate = () => {
@@ -63,8 +73,9 @@ export default class FormStep extends React.Component {
             return (
                 <FormItem key={item.name} item={item}/>
                 )
-        })
+        });
 
+        console.log("STORE", dataStore);
 
         return (
             <div>
