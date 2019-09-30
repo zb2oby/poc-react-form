@@ -13,6 +13,7 @@ class DataStore extends EventEmitter{
             // Initialisation/Réinitialisation du store à la sélection du domaine de sinistre (habitation, auto...)
             case "UPDATE_DATA":
                 this.data = action.data;
+                console.log("UPDATE_DATA", this.data);
                 break;
 
             default:

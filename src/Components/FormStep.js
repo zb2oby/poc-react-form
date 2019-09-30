@@ -78,9 +78,6 @@ export default class FormStep extends React.Component {
                 <FormItem key={item.name} item={item}/>
                 )
         });
-
-        console.log("STORE", dataStore.data);
-
         return (
             <div>
                 {items}
