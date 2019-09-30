@@ -5,7 +5,6 @@ export default class FormItem extends React.Component {
         super(props)
     }
 
-
     render() {
 
         let errors = null;
@@ -18,7 +17,7 @@ export default class FormItem extends React.Component {
 
         return(
           <div>
-              {this.props.item.show && this.props.item.content}
+              {this.props.show && this.props.item.content}
               {errors !== null && errors}
           </div>
         )

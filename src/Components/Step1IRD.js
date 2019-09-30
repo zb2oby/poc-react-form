@@ -1,12 +1,12 @@
 import React from 'react';
 import FormStep from "./FormStep";
-import {rules} from "../Services/ValidationRules";
 import dataStore from "../Services/dataStore";
+import FormItem from "./FormItem";
 
 
 export default class Step1IRD extends FormStep {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             items :  [
                 {
@@ -18,7 +18,7 @@ export default class Step1IRD extends FormStep {
                 },
                 {
                     name: "prenom",
-                    show: true,
+                    show : dataStore.data.nom !== "",
                     errors: [],
                     value: dataStore.data.prenom ? dataStore.data.prenom : "",
                     content:  <input placeholder={"prenom"} onChange={(e) => this.onChange("prenom", e)} className={"input"} name={"prenom"} />
@@ -26,5 +26,24 @@ export default class Step1IRD extends FormStep {
             ],
 
         }
+    }
+
+
+
+
+    render() {
+        const items = this.state.items.map((item)=> {
+            return (
+                <FormItem key={item.name} show={item.show} item={item}/>
+            )
+        });
+        console.log(items);
+        return (
+            <div>
+                {items}
+                <button type={"button"} onClick={()=>this.validateStep(this.state.items)}>valider</button>
+            </div>
+
+        )
     }
 }

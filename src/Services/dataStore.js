@@ -5,7 +5,7 @@ import Dispatcher from "./Dispatcher";
 class DataStore extends EventEmitter{
     constructor(){
         super();
-        this.data = {}
+        this.data = {nom: "", prenom: ""}
     }
 
     handleActions(action){
