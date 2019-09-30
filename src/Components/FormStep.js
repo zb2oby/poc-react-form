@@ -15,7 +15,6 @@ export default class FormStep extends React.Component {
 
 
     onChange = (name, val) => {
-        let data = dataStore.data;
         //on itere sur les items
         let items = this.state.items.map((item)=> {
             //pour l'item qu'on modifie
@@ -24,22 +23,19 @@ export default class FormStep extends React.Component {
                     item.errors = []
                 }
                 item.value = val.target.value;
-                data[item.name] = item.value;
             }
             return item;
         });
         this.setState({items: items});
 
 
-        Dispatcher.dispatch({
-            type : "UPDATE_DATA",
-            data : data
-        })
+
     };
 
 
     validate = () => {
         let isValid = true;
+        let data = dataStore.data;
         let items = this.state.items.map((item)=> {
             //on vide les précédentes erreurs
             item.errors = [];
@@ -53,6 +49,9 @@ export default class FormStep extends React.Component {
                     item.errors.push(rule.message);
                 }
             });
+            if (isValid) {
+                data[item.name] = item.value;
+            }
             return item;
         });
 
@@ -60,6 +59,11 @@ export default class FormStep extends React.Component {
         if (!isValid) {
             this.setState({
                 items: items
+            })
+        } else {
+            Dispatcher.dispatch({
+                type : "UPDATE_DATA",
+                data : data
             })
         }
 
@@ -75,7 +79,7 @@ export default class FormStep extends React.Component {
                 )
         });
 
-        console.log("STORE", dataStore);
+        console.log("STORE", dataStore.data);
 
         return (
             <div>
