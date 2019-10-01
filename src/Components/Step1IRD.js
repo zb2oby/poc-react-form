@@ -11,17 +11,23 @@ export default class Step1IRD extends FormStep {
             items :  [
                 {
                     name: "nom",
-                    show: true,
                     errors: [],
                     value: dataStore.data.nom ? dataStore.data.nom : "",
-                    content: <input placeholder={"nom"} onChange={(e) => this.onChange("nom", e)} className={"input"} name={"nom"} />
+                    show: () => (true),
+                    render: (props) => (
+                        <FormItem {...props}>
+                            <input placeholder={props.name} onChange={(e) => this.onChange(props.name, e)} className={"input"} name={props.name} />
+                        </FormItem>)
                 },
                 {
                     name: "prenom",
-                    show : dataStore.data.nom !== "",
                     errors: [],
                     value: dataStore.data.prenom ? dataStore.data.prenom : "",
-                    content:  <input placeholder={"prenom"} onChange={(e) => this.onChange("prenom", e)} className={"input"} name={"prenom"} />
+                    show: () => (dataStore.data.nom !== ""),
+                    render:(props) => (
+                        <FormItem {...props} show={dataStore.data.nom !== ""}>
+                            <input placeholder={props.name} onChange={(e) => this.onChange(props.name, e)} className={"input"} name={props.name} />
+                        </FormItem>)
                 }
             ],
 
@@ -30,20 +36,4 @@ export default class Step1IRD extends FormStep {
 
 
 
-
-    render() {
-        const items = this.state.items.map((item)=> {
-            return (
-                <FormItem key={item.name} show={item.show} item={item}/>
-            )
-        });
-        console.log(items);
-        return (
-            <div>
-                {items}
-                <button type={"button"} onClick={()=>this.validateStep(this.state.items)}>valider</button>
-            </div>
-
-        )
-    }
 }

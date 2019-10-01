@@ -8,8 +8,8 @@ export default class FormItem extends React.Component {
     render() {
 
         let errors = null;
-        if (this.props.item.errors.length > 0) {
-            errors = this.props.item.errors.map((error, i)=> {
+        if (this.props.errors.length > 0) {
+            errors = this.props.errors.map((error, i)=> {
                 return <div key={i}>{error}</div>
             });
 
@@ -17,7 +17,7 @@ export default class FormItem extends React.Component {
 
         return(
           <div>
-              {this.props.show && this.props.item.content}
+              {this.props.show && this.props.children}
               {errors !== null && errors}
           </div>
         )

@@ -49,14 +49,17 @@ export default class FormStep extends React.Component {
             item.errors = [];
             //on charge la liste des regles du champ à valider
             let itemRules = rules[item.name];
-            //on itere sur les regle
+            //on itere sur les regle pour les champ actuellement visibles
+
             itemRules.map((rule)=> {
                 //si une règle n'est pas respectée on set isValid à false pour modifier le state et on charge les messages d'erreur dans l'item
-                if (!rule.isValid(item.value) && item.show === true) {
+                if (!rule.isValid(item.value) && item.show() === true) {
                     isValid = false;
                     item.errors.push(rule.message);
                 }
             });
+
+
             if (isValid) {
                 data[item.name] = item.value;
             }
@@ -78,5 +81,21 @@ export default class FormStep extends React.Component {
         //on retourne la valeur de isValid pour l'etape suivante
         return isValid
     };
+
+    render() {
+        const items = this.state.items.map((item)=> {
+            return (
+                item.render({show: item.show(), errors: item.errors, key:item.name, name: item.name, value: item.value})
+            )
+        });
+        console.log(items);
+        return (
+            <div>
+                {items}
+                <button type={"button"} onClick={()=>this.validateStep(this.state.items)}>valider</button>
+            </div>
+
+        )
+    }
 
 }
