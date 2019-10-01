@@ -25,7 +25,7 @@ export default class Step1IRD extends FormStep {
                     value: dataStore.data.prenom ? dataStore.data.prenom : "",
                     show: () => (dataStore.data.nom !== ""),
                     render:(props) => (
-                        <FormItem {...props} show={dataStore.data.nom !== ""}>
+                        <FormItem {...props}>
                             <input placeholder={props.name} onChange={(e) => this.onChange(props.name, e)} className={"input"} name={props.name} />
                         </FormItem>)
                 }

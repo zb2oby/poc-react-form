@@ -29,6 +29,10 @@ export default class FormStep extends React.Component {
                 }
                 item.value = val.target.value;
             }
+            //pour les autres item si ils sont désormais cachés on vide les erreurs egalement
+            else if( !item.show() && item.errors.length > 0) {
+                item.errors = [];
+            }
 
             return item;
         });
