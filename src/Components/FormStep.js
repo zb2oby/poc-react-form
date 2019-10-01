@@ -9,35 +9,34 @@ export default class FormStep extends React.Component {
         super(props)
         this.state = {
             items : [],
+            values:{},
         }
     }
 
 
     onChange = (name, val) => {
-        let data = dataStore.data;
-        data[name] = val.target.value;
-        Dispatcher.dispatch({
-            type : "UPDATE_DATA",
-            data : data
-        })
+        let values = dataStore.data;
         //on itere sur les items
         let items = this.state.items.map((item)=> {
             //pour l'item qu'on modifie
             if (item.name === name) {
+                //on vide les erreurs s'il en contiens
                 if (item.errors.length > 0) {
                     item.errors = []
                 }
+                //on enregistre sa valeur
                 item.value = val.target.value;
+                values[item.name] = val.target.value;
             }
             //pour les autres item si ils sont désormais cachés on vide les erreurs egalement
-            else if( !item.show() && item.errors.length > 0) {
+            else if( !item.show(values) && item.errors.length > 0) {
                 item.errors = [];
             }
 
             return item;
         });
 
-        this.setState({items: items});
+        this.setState({items: items, values: values});
 
 
 
@@ -57,7 +56,7 @@ export default class FormStep extends React.Component {
 
             itemRules.map((rule)=> {
                 //si une règle n'est pas respectée on set isValid à false pour modifier le state et on charge les messages d'erreur dans l'item
-                if (!rule.isValid(item.value) && item.show() === true) {
+                if (!rule.isValid(item.value) && item.show(this.state.values) === true) {
                     isValid = false;
                     item.errors.push(rule.message);
                 }
@@ -89,7 +88,7 @@ export default class FormStep extends React.Component {
     render() {
         const items = this.state.items.map((item)=> {
             return (
-                item.render({show: item.show(), errors: item.errors, key:item.name, name: item.name, value: item.value})
+                item.render({show: item.show(this.state.values), errors: item.errors, key:item.name, name: item.name, value: item.value})
             )
         });
         console.log(items);

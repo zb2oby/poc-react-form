@@ -16,17 +16,17 @@ export default class Step1IRD extends FormStep {
                     show: () => (true),
                     render: (props) => (
                         <FormItem {...props}>
-                            <input placeholder={props.name} onChange={(e) => this.onChange(props.name, e)} className={"input"} name={props.name} />
+                            <input defaultValue={props.value} placeholder={props.name} onChange={(e) => this.onChange(props.name, e)} className={"input"} name={props.name} />
                         </FormItem>)
                 },
                 {
                     name: "prenom",
                     errors: [],
                     value: dataStore.data.prenom ? dataStore.data.prenom : "",
-                    show: () => (dataStore.data.nom !== ""),
+                    show: (values) => (values && values.nom !== ""),
                     render:(props) => (
                         <FormItem {...props}>
-                            <input placeholder={props.name} onChange={(e) => this.onChange(props.name, e)} className={"input"} name={props.name} />
+                            <input defaultValue={props.value} placeholder={props.name} onChange={(e) => this.onChange(props.name, e)} className={"input"} name={props.name} />
                         </FormItem>)
                 }
             ],
