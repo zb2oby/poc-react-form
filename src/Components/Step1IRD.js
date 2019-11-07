@@ -4,7 +4,7 @@ import FormItem from "./FormItem";
 import Dispatcher from "../Services/Dispatcher";
 import dataStore from "../Services/dataStore";
 
-export default class Step1IRD extends FormStep {
+export default class Step1IRD extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -46,7 +46,7 @@ export default class Step1IRD extends FormStep {
     }
 
 
-    persist = () => {
+   /* persist = () => {
         Dispatcher.dispatch({
             type : "UPDATE_DATA",
             data : this.state.values
@@ -54,7 +54,7 @@ export default class Step1IRD extends FormStep {
         this.setState({messageOk: "EnregistrementOk"})
 
     }
-
+*/
 
 
 }
