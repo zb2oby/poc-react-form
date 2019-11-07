@@ -11,7 +11,9 @@ export default class Formulaire extends React.Component {
 
     render() {
         return (
-            <Step1IRD/>
+            <div className="mcf-container mcf-bg--white mcf-p--5">
+                <Step1IRD/>
+            </div>
         )
     }
 }

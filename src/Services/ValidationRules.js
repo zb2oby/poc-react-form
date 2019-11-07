@@ -1,12 +1,14 @@
 import {isNotEmpty} from "./ValidationUtils";
 
 export const rules = {
-    nom: [
+    nomJeuneFille: [
         {
-            key: "nom_invalide",
+            key: "nomjf_invalide",
             message: "ce nom est impossible",
-            isValid: (value) => (value !== "boubee")
+            isValid: (value) => (value !== "test")
         },
+    ],
+    nom: [
         {
             key: "nom_vide",
             message: "le nom est obligatoire",

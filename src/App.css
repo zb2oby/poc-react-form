@@ -1,22 +1,10 @@
-.App {
-  text-align: center;
+.champsInput{
+    padding: 4px 2px 4px 8px;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    max-height: 2.5em;
 }
 
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #09d3ac;
+.label-width {
+    width: 200px;
 }

@@ -1,11 +1,10 @@
 import {EventEmitter} from "events";
 import Dispatcher from "./Dispatcher";
 
-
 class DataStore extends EventEmitter{
     constructor(){
         super();
-        this.data = {nom: "", prenom: ""}
+        this.data = {nomJeuneFille: "Aucun", nom: "", prenom: ""}
     }
 
     handleActions(action){
@@ -21,6 +20,7 @@ class DataStore extends EventEmitter{
         }
     }
 }
+
 
 const dataStore = new DataStore();
 dataStore.setMaxListeners(500);
