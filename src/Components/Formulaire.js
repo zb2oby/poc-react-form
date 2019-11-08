@@ -69,7 +69,7 @@ export default class Formulaire extends React.Component{
                         <button className="mcf-btn mcf-btn--primary mcf-pl--6 mcf-pr--6 mcf-m--3 float-r" type={"button"}>valider</button>
                     </Form.Item>
                 </Form>
-                {this.state.persistOk && <div className={`modal`}><span>Enregistrement Mis à jour : </span><button onClick={() => (this.setState({persistOk: false}))} className="mcf-btn mcf-btn--primary mcf-pl--6 mcf-pr--6 mcf-m--3 float-r" type={"button"}>OK</button></div>}
+                {this.state.persistOk && <div className={`modal`}><span>Enregistrement Mis à jour</span><button onClick={() => (this.setState({persistOk: false}))} className="mcf-btn mcf-btn--primary mcf-pl--6 mcf-pr--6 mcf-m--3 float-r" type={"button"}>OK</button></div>}
             </div>
         )
     }
