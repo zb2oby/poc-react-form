@@ -25,7 +25,7 @@ export default class Formulaire extends React.Component{
 
     render() {
         return (
-            <div className="mcf-container mcf-bg--white mcf-p--5">
+            <div className={`"mcf-container mcf-bg--white mcf-p--5 ${this.state.persistOk && 'filter-active'}`}>
                 <Form>
                     <Form.Item
                         name="nomJeuneFille"
@@ -56,21 +56,20 @@ export default class Formulaire extends React.Component{
                         required={true}
                         inline={true}
                         show={(values) => (values && values.nom !== "")}
-                        type={"text"} //sert à envoyer e ou e.target.value dans le onchange
+                        type={"text"}
                         eventTrigger={"onChange"}
                     >
                         <input className="champsInput" />
                     </Form.Item>
                     <Form.Item
-                        name={"submit"}
                         show={()=>(true)}
-                        submitAction={this.persist}
-                        eventTrigger={"onClick"}
+                        callBackAction={this.persist}
+                        type={"submit"}
                     >
-                        <button className="mcf-btn mcf-btn--primary mcf-pl--6 mcf-pr--6 mcf-m--3 float-r" key={"button-submit"} type={"button"}>valider</button>
+                        <button className="mcf-btn mcf-btn--primary mcf-pl--6 mcf-pr--6 mcf-m--3 float-r" type={"button"}>valider</button>
                     </Form.Item>
                 </Form>
-                {this.state.persistOk && <div>Enregistrement OK</div>}
+                {this.state.persistOk && <div className={`modal`}><span>Enregistrement Mis à jour : </span><button onClick={() => (this.setState({persistOk: false}))} className="mcf-btn mcf-btn--primary mcf-pl--6 mcf-pr--6 mcf-m--3 float-r" type={"button"}>OK</button></div>}
             </div>
         )
     }

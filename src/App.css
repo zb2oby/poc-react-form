@@ -8,3 +8,37 @@
 .label-width {
     width: 200px;
 }
+
+
+
+
+.modal {
+    width: 500px;
+    height: 300px;
+    text-align: center;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    top: 33%;
+    margin-left: -250px;
+    background-color: #ffffff;
+    border-radius: 7px;
+    margin-top: -150px;
+}
+
+.modal span {
+    display: block;
+    margin-top: 50px;
+}
+
+.filter-active:before {
+    content: "";
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #817b7b;
+    opacity: 0.65;
+}

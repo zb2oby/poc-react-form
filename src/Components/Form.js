@@ -56,18 +56,24 @@ export default class Form extends React.Component {
 
         this.state.items.map((item)=> {
 
-            if (item.props.name) {
-                let val = "";
-                if (item.props.initialValue) {
-                    val = item.props.initialValue
-                }
+            let props = {...item.props}
 
-                values[item.props.name] = val;
-            }
+            if (props.name) {
+                if (!props.type || props.type !== "submit") {
+                    let val = "";
+                    if (props.initialValue) {
+                        val = props.initialValue
+                    }
+
+                    values[props.name] = val;
+                }
+            };
+            return item;
 
         });
 
         this.setState({values: values})
+
 
 
     };
@@ -85,7 +91,7 @@ export default class Form extends React.Component {
 
             let props = {...item.props}
 
-            if (props.name) {
+            if (props.name && props.name !== "submit") {
                 //pour l'item qu'on modifie
                 if (props.name === name) {
                     //on vide les erreurs s'il en contiens
@@ -97,8 +103,8 @@ export default class Form extends React.Component {
                     values[props.name] = val;
 
                     //execution de la fonction eventuellement définie en callback du changement de valeur
-                    if (props.hasOwnProperty("actionAfterChange")) {
-                        props.actionAfterChange(values);
+                    if (props.hasOwnProperty("callBackAction")) {
+                        props.callBackAction(values);
                     }
 
                 }
@@ -205,6 +211,7 @@ export default class Form extends React.Component {
             })
         } else {
             persistFunction(this.state.values);
+            this.initValues();
         }
 
         //on retourne la valeur de isValid pour l'etape suivante
@@ -212,47 +219,90 @@ export default class Form extends React.Component {
     };
 
 
+    defineActionForEvent = (eventTrigger, inputName, inputType, callBackAction) => {
+
+        let actionProps = {};
+        let action = null;
+
+        switch (eventTrigger) {
+            case "onChange":
+                action = (e) => {
+                    let val = e;
+                    if (inputType === "text") {
+                        val = e.target.value
+                    }
+                    this.onChange(inputName, val)
+                }
+                break;
+            case "onClick":
+                if (inputType === "submit") {
+                    action = () => this.validateStep(callBackAction);
+                } else {
+                    action = (e) => this.onChange(inputName, e)
+                }
+                break;
+            default:
+                break;
+
+        }
+
+        actionProps[eventTrigger] = action
+        return actionProps ;
+
+    };
+
     render() {
 
-        const items = this.state.items.map((item)=> {
+        let items = this.state.items.map((item)=> {
+
+            let formItem = item;
 
             if (item.props.name) {
+
+                //defninition des actions à passer à l'input en fonction des eventTrigger passés à formitem
+                let actionProps = this.defineActionForEvent(item.props.eventTrigger, item.props.name, item.props.type, item.props.callBackAction);
+
+                //clonage de l'input avec les props du formitem
+                let inputProps = {
+                    name: item.props.name,
+                    value: '',
+                };
+
+                if (this.state.values[item.props.name]) {
+                    inputProps.value = this.state.values[item.props.name];
+                }
+
+                let inputField = React.cloneElement(item.props.children, {...inputProps, ...actionProps})
+
+                //clonage du formitem avec les nouveaux children et les nouvelles valeurs du state
                 let props = {...item};
                 props.show = item.props.show(this.state.values);
                 props.key = item.props.name;
-                delete props.render;
-
-                let onChange = null;
-                if (item.props.eventTrigger === "onChange") {
-
-                    onChange = (e) => {
-                        let val = e;
-                        if (item.props.type === "text") {
-                            val = e.target.value
-                        }
-                        this.onChange(item.props.name, val)
-                    }
-                }
-                let onClick = null;
-                if (item.props.eventTrigger === "onClick") {
-                    if (item.props.name === "submit") {
-                        onClick = () => this.validateStep(item.props.submitAction);
-                    } else {
-                        onClick = (e) => this.onChange(item.props.name, e.target.value)
-                    }
-                }
-
-
-                let inputField = React.cloneElement(item.props.children, {name: item.props.name, onChange: onChange, onClick: onClick, defaultValue: this.state.values[item.props.name]})
-                return React.cloneElement(item, {...props, errors: item.props.errors}, inputField)
+                formItem = React.cloneElement(item, {...props, errors: item.props.errors}, inputField);
 
             } else {
+
+                //clonage de l'input avec les props du formitem
+
+                let actionProps = null
+                if (item.props.type === "submit") {
+                    actionProps = this.defineActionForEvent("onClick", "", item.props.type, item.props.callBackAction);
+                }
+
+                let inputField = React.cloneElement(item.props.children, {...actionProps})
+
+                //clonage du formitem avec les nouveaux children et les nouvelles valeurs du state
                 let props = {...item};
                 props.show = item.props.show(this.state.values);
-                return React.cloneElement(item, {...props})
+                formItem = React.cloneElement(item, {...props}, inputField);
+
             }
 
+            return formItem;
+
         });
+
+        //console.log(items)
 
         return (
             <div>
