@@ -109,7 +109,7 @@ export default class Form extends React.Component {
 
                 }
                 //pour les autres item si ils sont désormais cachés on vide les erreurs egalement et on réinitialise la valeur
-                else if( !props.show(values) ) {
+                else if(!props.show(values) ) {
                     if (props.errors && props.errors.length > 0) {
                         props.errors = [];
                     }
@@ -228,7 +228,7 @@ export default class Form extends React.Component {
             case "onChange":
                 action = (e) => {
                     let val = e;
-                    if (inputType === "text") {
+                    if (inputType === "text" || inputType === "radio") {
                         val = e.target.value
                     }
                     this.onChange(inputName, val)
@@ -268,6 +268,7 @@ export default class Form extends React.Component {
                     value: '',
                 };
 
+
                 if (this.state.values[item.props.name]) {
                     inputProps.value = this.state.values[item.props.name];
                 }
@@ -276,6 +277,7 @@ export default class Form extends React.Component {
 
                 //clonage du formitem avec les nouveaux children et les nouvelles valeurs du state
                 let props = {...item};
+
                 props.show = item.props.show(this.state.values);
                 props.key = item.props.name;
                 formItem = React.cloneElement(item, {...props, errors: item.props.errors}, inputField);

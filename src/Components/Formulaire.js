@@ -2,6 +2,11 @@ import React from 'react';
 import Form from "./Form";
 import dataStore from "../Services/dataStore";
 import Dispatcher from "../Services/Dispatcher";
+import RadioList from "./RadioList";
+
+const enumMrMme = [
+    {label: "Mr", value: "Mr"}, {label: "Mme", value: "Mme"}
+]
 
 export default class Formulaire extends React.Component{
 
@@ -17,7 +22,7 @@ export default class Formulaire extends React.Component{
         Dispatcher.dispatch({
             type : "UPDATE_DATA",
             data : data
-        })
+        });
         this.setState({persistOk: true})
     };
 
@@ -27,6 +32,17 @@ export default class Formulaire extends React.Component{
         return (
             <div className={`"mcf-container mcf-bg--white mcf-p--5 ${this.state.persistOk && 'filter-active'}`}>
                 <Form>
+                    <Form.Item
+                        name="civilite"
+                        initialValue={dataStore.data.civilite}
+                        inline={true}
+                        label={"Civilité"}
+                        show={() => (true)}
+                        type={"radio"}
+                        eventTrigger={"onChange"}
+                    >
+                        <RadioList dataSet={enumMrMme} />
+                    </Form.Item>
                     <Form.Item
                         name="nomJeuneFille"
                         initialValue={dataStore.data.nomJeuneFille}

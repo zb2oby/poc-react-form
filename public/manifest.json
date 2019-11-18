@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "mcf-react-form",
+  "name": "POC formulaire React.js",
   "icons": [
     {
       "src": "favicon.ico",
